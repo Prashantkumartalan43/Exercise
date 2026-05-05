@@ -115,3 +115,38 @@ Account2.deposit(20000)
 Account2.withdraw(100000)
 print(Account2.info())
 
+import numpy as np
+
+data = [67, 65, 43, 39, 89, 55, 67, 30, 44, 55, 60, 25, 50, 55, 60, 58, 34, 55]
+array = np.array(data)
+mean = np.mean(array)
+print(f'Grade: {mean:.2f}')
+
+arithmetic_mean = np.mean(data)
+bincount = np.bincount(data)
+mode = bincount.argmax()
+std_dev = np.std(data)
+median = np.median(data)
+sum = np.sum(data)
+min = np.min(data)
+max = np.max(data)
+
+print(f'mean:{arithmetic_mean:.2f}')
+print(f'Bin count:{bincount}')
+print(f'Mode:{mode}')
+print(f'std dev:{std_dev:.2f}')
+print(f'median:{median}')
+print(f'sum:{sum}')
+print(f'min:{min}')
+print(f'max:{max}')
+
+outlier_mask = (np.abs(data - mean) > 7*std_dev) | (data < 0)
+
+data_with_nan = data.copy()
+data_with_nan[outlier_mask] = np.nan
+
+new_array = np.arange(0,11,2)
+print(new_array)
+
+new_arr = np.linspace(0.1, 0.5, 5)
+print(new_arr)
