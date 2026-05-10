@@ -150,3 +150,23 @@ print(new_array)
 
 new_arr = np.linspace(0.1, 0.5, 5)
 print(new_arr)
+
+# Array copy
+
+original_array = np.array([2, 4, 6, 8, 10])
+
+copy_array = original_array.copy()
+
+print(f'THis is original array : {original_array}')
+print(f'THis is copy array : {copy_array}')
+
+# Array view
+
+original_array = np.array([2, 4, 6, 8, 10])
+
+view_array = original_array.view()
+
+print(f'original array : {original_array}')
+print(f'view array : {view_array}')
+
+
