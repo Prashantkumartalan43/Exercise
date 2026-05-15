@@ -169,4 +169,74 @@ view_array = original_array.view()
 print(f'original array : {original_array}')
 print(f'view array : {view_array}')
 
+import pandas as pd
 
+column_names = ["Date_of_transaction",
+          "Branch_name",
+          "Amount_of_sale",
+          "Is_active"]
+
+df_one = pd.DataFrame(columns=column_names)
+
+df_one
+
+default_data = {
+    "Date_of_transaction": ["Jan 1", "Jan 2"],
+    "Branch_name": ["Branch A", "Branch B"],
+    "Amount_of_sale": [500, 600],
+    "Is_active" : [True, False]
+}
+df_default_data = pd.DataFrame(default_data)
+
+df_default_data
+
+# combining dataframes
+
+df_combined = pd.concat([df_one, df_default_data])
+df_combined.reset_index(drop=True, inplace=True)
+
+df_default_data.iloc[0:4, 0:2]
+
+# Cleaning data
+
+df_hotel = pd.read_csv("hotel_bookings.csv")
+
+df_hotel.isnull().sum()
+
+df_hotel.drop(["company", "agent"], axis=1, inplace=True)
+
+df_hotel.dropna(inplace=True)
+
+df_hotel.duplicated().sum()
+df_hotel.drop_duplicates(inplace=True)
+df_hotel.reset_index(drop=True, inplace=True)
+
+df_hotel['reservation_status_date'] = pd.to_datetime(df_hotel['reservation_status_date'])
+df_hotel['year'] = df_hotel['reservation_status_date'].dt.year
+df_hotel['month'] = df_hotel['reservation_status_date'].dt.month
+df_hotel['day'] = df_hotel['reservation_status_date'].dt.day
+df_hotel.drop(('reservation_status_date'), inplace=True, axis=1)
+
+# Correlation Matrix
+
+cat_cols = [col for col in df_hotel.columns if df_hotel[col].dtype == 'object']
+
+cat_df = df_hotel[cat_cols]
+
+for col in cat_df.columns:
+  print(f'{col}: \n{cat_df[col].unique()}\n')
+
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+
+cat_df['country'] = le.fit_transform(cat_df['country'])
+cat_df['hotel'] = le.fit_transform(cat_df['hotel'])
+
+cat_df = pd.get_dummies(data=cat_df, columns=["arrival_date_month", "meal", "market_segment", "distribution_channel",
+                                             "reserved_room_type", "assigned_room_type", "customer_type",
+                                             "deposit_type", "reservation_status"], dtype=int)
+
+num_df = df_hotel.select_dtypes(include=['int64', 'float64'])
+
+final_df = pd.concat([cat_df, num_df], axis=1)
+corr_matrix = final_df.corr().abs()
