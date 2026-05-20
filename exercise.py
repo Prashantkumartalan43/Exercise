@@ -240,3 +240,7 @@ num_df = df_hotel.select_dtypes(include=['int64', 'float64'])
 
 final_df = pd.concat([cat_df, num_df], axis=1)
 corr_matrix = final_df.corr().abs()
+
+df_hotel.set_index('arrival_date_month', inplace=True)
+df_hotel.loc[df_hotel.market_segment.str.match('Direct')]
+df_hotel.iloc[:5]
